@@ -46,7 +46,7 @@ def parse_coco_annotations(json_path, image_dir):
 
 def download_image(file_name, subset, out_dir):
     url = f"http://images.cocodataset.org/{subset}2017/{file_name}"
-    dest_path = out_dir / file_name
+    dest_path = out_dir / f"coco_{file_name}"
     if dest_path.exists():
         return
     r = requests.get(url, stream=True)
@@ -78,7 +78,7 @@ def prepare_subset(data_map, subset_name, n_images, image_src, out_base):
         download_image(file_name, image_src, out_img_dir)
 
         yolo_labels = [coco_to_yolo(a, width, height) for a in anns]
-        label_file = out_lbl_dir / (Path(file_name).stem + ".txt")
+        label_file = out_lbl_dir / (f"coco_{Path(file_name).stem}.txt")
         with open(label_file, "w") as f:
             f.write("\n".join(yolo_labels))
 
